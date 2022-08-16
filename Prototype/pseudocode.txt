@@ -1,0 +1,58 @@
+implem pseudo code 
+
+SENDER :
+	Thread send():
+		for j=1..k{	
+			messages = create(n,p)
+			go_hash = 1
+			for i=1..n{                    // Le Hash des messages se fait en même temps que l'envoi dans le Thread Hash_mess()
+				ts()
+				send(m[i],ip,port)
+			}
+			while(!(h_done == j));         // Mais on s'assure que le Hash soit fini avant de créer de nouveaux messages
+			free(messages);
+		}
+	
+	Thread recv():
+		for j=1..k{
+			for i=1..n{
+				b[i] = recv()
+				ts()
+			}
+			bits_available = j	
+		}
+	
+	Thread Hash_mess():
+		for j=1..k
+		{
+			while(!(go_hash)); //à faire avec thread_wait_cond() et thread_signal()
+			go_hash=0;
+			h[j] = HashUpdate(messages)
+			h_done=j
+		}
+	// Hash_mess est en avance devant Hash_all car les messages sont disponibles beaucoup plus tôt que le reste.
+	// Il dialogue en permanence avec send()
+	// Il stock les hash des messages de la j_ème session dans h[j]
+		
+	Thread Hash_all_and_Decide():
+		for j=1..k
+		{
+			while(!(bits_available >= j 🤔️&& h_done >= j  ); // c'est quasi-impossible que les j_ème bits soient dispo et pas le j_ème hash mais bon on le met par sécu
+			Decide(rtts[j])
+			free(rtts[j])
+			h[j]=HashUpdate(bits[j])
+			free(bits[j])
+		}
+	
+	
+	
+	Thread RVD() (for RecvVerifDecide) :
+	
+	
+	
+	
+		
+		\\      //   ||    ====   ========
+		 \\    //    ||   //         ||
+		  \\  //     ||   \\         ||
+		   \\//      ||    ====      ||
